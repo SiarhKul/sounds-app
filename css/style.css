@@ -41,6 +41,7 @@ ul {
 }
 @media (min-width: 768px) {
   .slider {
+   
     display: block;
     height: 100%;
     overflow: hidden;
@@ -56,6 +57,7 @@ ul {
     position: relative;
     width: 100%;
     z-index: 1;
+     transition: all .4s ease-in-out;
   }
   .slider-slide {
     position: relative;
