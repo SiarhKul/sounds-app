@@ -1,35 +1,77 @@
 
-const aud = document.querySelector('#sound')
-console.log(aud);
-
 let slidWidth = 0;
 let count = 0;
+const data = [
+	{
+		path: ['../sounds-app/assets/sounds/comptine-dun.mp3', '../sounds-app/assets/sounds/sea.mp3'],
+		nameSong: ['comptine-dum', 'sea']
+	},
+	{
+		path: ['../sounds-app/assets/sounds/piano-wind.mp3', '../sounds-app/assets/sounds/bird.mp3'],
+		nameSong: ['piano-wind', 'bird']
+	}
+]
 const sliderContainer = document.querySelector('.slider');
 const slider = sliderContainer.querySelector('.slider-wrapper');
 const sliderItem = slider.querySelectorAll('.slider-slide');
 const sliderArrows = sliderContainer.querySelectorAll('.slider-btn');
 const btnFulScreen = document.querySelector('.fullscreen');
 const maxWidth = sliderItem[0].clientWidth * (sliderItem.length - 1)
+const player = document.querySelector('.playlist-item')
+const playList = document.querySelector('.playlist')
 
 btnFulScreen.addEventListener('click', setFullScreen)
-sliderArrows[0].addEventListener('click', flipLeft);
-sliderArrows[1].addEventListener('click', addSound);
+// sliderArrows[0].addEventListener('click', flipLeft);
 // sliderArrows[1].addEventListener('click', flipRight);
 window.addEventListener('resize', resize);
 
-function addSound() {
-	// const song = new Audio('./assets/sounds/sea.mp3')
-	const song = new Audio('./assets/sounds/comptine-dun.mp3')
-	song.play()
-	document.body.append(song)
-	// sliderItem.forEach((elem, i) => {
-	// 	if (i === count) {
-	// 		// song.src = './assets/sounds/sea.mp3'
-	// 		console.dir(elem)
-	// 	}
 
-	// })
+// ===========================================================
+
+sliderArrows[0].addEventListener('click', removeAudio);
+sliderArrows[1].addEventListener('click', addSound);
+
+function removeAudio() {
+	const audioAll = document.querySelectorAll('audio')
+	audioAll.forEach((audio) => { audio.remove() })
 }
+
+function addSound() {
+	const ul = document.createElement('ul');
+	playList.append(ul);
+	ul.classList.add('playlist-item')
+	ul.classList.add('audio')
+
+	let html = '';
+
+	data[count].nameSong.forEach((song, i) => {
+		const li =
+			`<li class="playlist-item audio" data-sound=${song}>
+								<button class="audio-toggle" title="Turn on/off sound"></button>
+								<label class="audio-inner" title="Volume">${song}
+								<input class="audio-volume" name="volume" data-sizing="%" type="range" min="0" max="100" value="0">
+								</label>
+							</li>`;
+		html += li
+		ul.innerHTML = html
+
+		window['let' + i] = (new Audio(`./assets/sounds/${song}.mp3`))
+		window['let' + i].setAttribute('data-sound', `${song}`)
+		window['let' + i].setAttribute('loop', '')
+		document.body.append(window['let' + i])
+	})
+}
+
+playList.addEventListener('click', (e) => {
+	const target = e.target.closest('li[data-sound]')
+	const idData = target.dataset.sound
+	console.dir(idData);
+	const elem = document.querySelector(`audio[data-sound=${idData}]`)
+	console.log(elem);
+})
+
+
+// ===========================================================
 
 function setFullScreen() {
 	if (!document.fullscreenElement) {
