@@ -25,7 +25,6 @@ btnFulScreen.addEventListener('click', setFullScreen)
 // sliderArrows[1].addEventListener('click', flipRight);
 window.addEventListener('resize', resize);
 
-
 // ===========================================================
 
 sliderArrows[0].addEventListener('click', removeAudio);
@@ -35,6 +34,8 @@ function removeAudio() {
 	const audioAll = document.querySelectorAll('audio')
 	audioAll.forEach((audio) => { audio.remove() })
 }
+
+window.addEventListener('load', addSound)
 
 function addSound() {
 	const ul = document.createElement('ul');
